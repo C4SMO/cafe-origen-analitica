@@ -43,3 +43,22 @@ Se aplicaron los patrones contador, acumulador y máximo, incluyendo el manejo d
 ### Ejecutar las pruebas
 
 `node src/pruebas.js`
+
+
+## MiniReto 3 — Métodos de arreglos y rankings
+
+Se incorporaron versiones de los indicadores mediante map, filter y reduce, junto con nuevas funciones de agrupación y clasificación.
+
+### Nuevas funcionalidades
+
+- Total vendido mediante métodos de arreglo.
+- Unidades vendidas mediante métodos de arreglo.
+- Ingresos por ciudad.
+- Agrupación de unidades por producto.
+- Ranking de productos por ingresos.
+- Verificación de equivalencia entre algoritmos.
+- Comprobación de integridad de los datos originales.
+
+### Ejecutar las verificaciones
+
+`node src/verificar.js`

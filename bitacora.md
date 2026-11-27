@@ -193,3 +193,85 @@ Resultado esperado: registro ID 10, correspondiente al producto Origen Huila 500
 ### Comando de ejecución
 
 `node src/pruebas.js`
+
+
+## MiniReto 3: Métodos de arreglos, agrupaciones y rankings
+
+### Objetivo
+
+Reescribir los indicadores mediante métodos de arreglos, comprobar su equivalencia con los ciclos manuales y construir agrupaciones y rankings de productos.
+
+### Las cinco preguntas sobre colecciones
+
+| Función | ¿Qué recorro? | ¿Qué filtro? | ¿Qué transformo? | ¿Qué acumulo? | ¿Cómo agrupo? |
+|---|---|---|---|---|---|
+| totalVendidoM | Ventas | Cantidades mayores que cero | Ventas en valores monetarios | Ingresos totales | No aplica |
+| unidadesVendidasM | Ventas | Cantidades mayores que cero | Objetos en cantidades | Unidades vendidas | No aplica |
+| ventasPorCiudadM | Ventas | Ciudad solicitada y ventas válidas | Ventas en valores monetarios | Ingresos de una ciudad | No aplica |
+| totalPorCiudad | Ventas | Ventas válidas | Nombres de ciudades normalizados | Ingresos | Por ciudad |
+| unidadesPorProducto | Ventas | Ventas válidas | Nombre como clave del diccionario | Cantidades | Por producto |
+| topProductosPorValor | Ventas | Ventas válidas | Diccionario en arreglo de objetos | Ingresos por producto | Por producto |
+
+### Métodos utilizados
+
+- `filter()`: selecciona las ventas que cumplen una condición.
+- `map()`: transforma los elementos de un arreglo.
+- `reduce()`: acumula valores y construye agrupaciones.
+- `sort()`: ordena productos mediante un criterio numérico descendente.
+- `slice()`: selecciona los primeros k elementos.
+- `Object.entries()`: convierte las propiedades de un objeto en pares clave-valor.
+- Operador de propagación (`...`): crea una copia superficial del arreglo antes de ordenar.
+
+### Decisiones técnicas
+
+- Se conservan las funciones desarrolladas con ciclos manuales.
+- Se utiliza un valor inicial explícito en cada reduce.
+- Se excluyen registros con cantidad igual a cero.
+- Se normalizan las ciudades mediante trim y toLowerCase.
+- Los ingresos se calculan reutilizando valorVenta.
+- Las agrupaciones utilizan objetos como diccionarios.
+- El arreglo original no se modifica durante el ordenamiento.
+- Los indicadores numéricos retornan cero ante arreglos vacíos.
+- Las agrupaciones vacías retornan un objeto vacío y los rankings vacíos retornan un arreglo vacío.
+
+### Resultados esperados de equivalencia
+
+| Indicador | Ciclos | Métodos |
+|---|---:|---:|
+| Total vendido | 985000 | 985000 |
+| Unidades vendidas | 21 | 21 |
+| Ventas Medellín | 356000 | 356000 |
+
+### Agrupación por ciudad
+
+| Ciudad | Ingresos COP |
+|---|---:|
+| Medellín | 356000 |
+| Bogotá | 276000 |
+| Cali | 185000 |
+| Pereira | 168000 |
+| Total | 985000 |
+
+### Ranking por unidades
+
+| Producto | Unidades |
+|---|---:|
+| Origen Huila 500 g | 7 |
+| Origen Nariño 250 g | 6 |
+| Origen Sierra 500 g | 5 |
+| Prensa francesa | 2 |
+| Molino manual | 1 |
+
+### Top 3 productos por ingresos
+
+| Posición | Producto | Ingresos COP |
+|---|---|---:|
+| 1 | Origen Huila 500 g | 294000 |
+| 2 | Origen Sierra 500 g | 225000 |
+| 3 | Prensa francesa | 190000 |
+
+### Plan de verificación
+
+Se creó el archivo verificar.js para comparar los resultados de ambos algoritmos, comprobar el comportamiento ante arreglos vacíos, validar la normalización de ciudades y verificar que los datos originales permanezcan intactos.
+
+Comando de ejecución: `node src/verificar.js`.
