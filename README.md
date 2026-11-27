@@ -199,6 +199,57 @@ Se seleccionó la implementación de recorrido único como alternativa preferida
 
 ### Ejecutar la comparación
 
+## Versión v0.2 — Análisis de rendimiento
+
+Esta versión incorpora herramientas para evaluar la eficiencia temporal y espacial del motor de analítica mediante la notación Big O.
+
+### Nuevas funcionalidades
+
+- Generación de historiales de ventas sintéticos.
+- Instrumentación y conteo de operaciones.
+- Medición de algoritmos con ciclos anidados.
+- Comparación de complejidad espacial.
+- Proyecciones de rendimiento.
+- Identificación de riesgos y planificación de optimizaciones.
+
+### Ejecutar las mediciones
+
+- `node src/medir.js`
+- `node src/medirRecurrentes.js`
+- `node src/medirMemoria.js`
+
+### Generar el informe técnico
+
+`node src/generarRendimiento.js`
+
+### Documentación
+
+- [Informe de rendimiento](RENDIMIENTO.md)
+- [Bitácora de desarrollo](bitacora.md)
+
+**Estado del proyecto:** v0.2 — Análisis y diagnóstico de rendimiento.
+
+
+## MiniReto 9 — Optimización de clientes recurrentes
+
+Se incorporaron algoritmos basados en Set y Map para reemplazar las búsquedas repetitivas del reporte de clientes recurrentes.
+
+### Nuevas funciones
+
+- `clientesRecurrentesSet()`
+- `comprasPorCliente()`
+- `clientesRecurrentesMap()`
+
+Complejidad temporal de las nuevas implementaciones: O(n) esperada.
+
+### Ejecutar las pruebas y mediciones
+
+`node src/optimizarRecurrentes.js`
+
+Se evalúan conjuntos de 1000, 10000 y 100000 ventas.
+
+Estado: v1.0 en desarrollo.
+
 `node src/medirMemoria.js`
 
 La prueba utiliza 10000 ventas generadas y verifica la equivalencia de los resultados, los recorridos, la creación de arreglos y la integridad de los datos originales.

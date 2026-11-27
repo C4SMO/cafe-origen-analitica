@@ -649,6 +649,176 @@ Se conservará totalCiudadCadena como referencia para futuras comparaciones de r
 
 Dos algoritmos pueden pertenecer a la misma categoría de complejidad temporal y presentar diferencias importantes en su cantidad real de operaciones y consumo de memoria.
 
-### Comando de ejecución
+### Comando de ejecución 
+
+## MiniReto 8: Informe de rendimiento y entrega v0.2
+
+### Objetivo
+
+Documentar la complejidad temporal y espacial del motor de analítica, establecer proyecciones de escalabilidad e identificar las funciones que requieren optimización.
+
+### Metodología
+
+Se desarrolló el archivo generarRendimiento.js para automatizar las mediciones y la construcción del informe técnico RENDIMIENTO.md.
+
+Se utilizaron 10000 ventas sintéticas, compartidas entre los algoritmos evaluados. Se realizaron tres muestras de tiempo y se seleccionó la mediana para reducir la influencia de fluctuaciones del sistema.
+
+### Resultados
+
+Las mediciones obtenidas se encuentran documentadas en RENDIMIENTO.md, junto con la clasificación de cada función y sus respectivas justificaciones.
+
+### Proyección
+
+Se estimó el rendimiento con 1000000 de ventas utilizando los tiempos medidos y la complejidad temporal de cada algoritmo.
+
+Las proyecciones representan estimaciones matemáticas y no garantías de rendimiento en producción.
+
+### Identificación del principal riesgo
+
+La función clientesRecurrentes representa el principal cuello de botella del motor debido a sus ciclos anidados y las búsquedas adicionales mediante includes.
+
+### Plan de optimización
+
+Se propone utilizar un diccionario o Map para almacenar la frecuencia de aparición de cada cliente, evitando comparar repetidamente las ventas entre sí.
+
+La mejora permitiría alcanzar una complejidad temporal esperada O(n), utilizando memoria adicional proporcional a los clientes distintos.
+
+Esta optimización no se implementa todavía.
+
+### Decisiones técnicas
+
+- Conservar los algoritmos originales como referencia.
+- Utilizar mediciones reales del entorno de ejecución.
+- Separar los resultados experimentales del análisis teórico.
+- Preferir recorridos únicos cuando existan restricciones de memoria.
+- Documentar las limitaciones de las proyecciones.
+
+### Revisión por un compañero
+
+- Compañero revisor: pendiente.
+- Observación recibida: pendiente.
+- Respuesta a la observación: pendiente.
+- Corrección realizada: pendiente.
+
+### Conclusión de la sesión
+
+La complejidad algorítmica permite identificar problemas de escalabilidad antes de que estos afecten el funcionamiento del software en producción.
+
+El motor v0.2 cuenta con mecanismos de generación de datos, instrumentación, medición y documentación de rendimiento.
+
+
+## MiniReto 9: Optimización de clientes recurrentes con Set y Map
+
+### 1. Entender el problema
+
+Entrada: arreglo de objetos que representan ventas.
+
+Salida: arreglo de identificadores de clientes que aparecen más de una vez.
+
+Restricciones:
+
+- No devolver clientes duplicados.
+- No modificar el arreglo original.
+- Mantener la equivalencia con el algoritmo anterior.
+- Procesar 100000 ventas en menos de un segundo.
+- El orden de los resultados puede variar.
+
+### 2. Ejemplos y casos borde
+
+| Entrada: clientes | Resultado esperado |
+|---|---|
+| [] | [] |
+| [C01] | [] |
+| [C01, C02] | [] |
+| [C01, C01] | [C01] |
+| [C01, C02, C01, C02] | [C01, C02] |
+| [C01, C01, C01] | [C01] |
+
+Con los datos originales se esperan los clientes C01, C02 y C03.
+
+### 3. Fuerza bruta
+
+El algoritmo original compara cada venta con todas las posteriores mediante ciclos anidados.
+
+Cantidad de comparaciones entre clientes:
+
+C(n) = n(n - 1) / 2
+
+Los ciclos tienen complejidad cuadrática O(n²). Sin embargo, las búsquedas adicionales mediante includes pueden elevar la complejidad del algoritmo completo a O(n³) en el peor caso.
+
+### 4. Optimizar
+
+Se identifica que el algoritmo repite búsquedas de clientes que podrían almacenarse previamente.
+
+Se plantean dos estrategias:
+
+- Set: almacenar clientes vistos y clientes recurrentes.
+- Map: almacenar el número de apariciones de cada cliente.
+
+Ambas estrategias evitan los ciclos anidados y las búsquedas secuenciales mediante includes.
+
+### 5. Implementar
+
+Se desarrollaron tres funciones:
+
+- clientesRecurrentesSet: identifica clientes recurrentes mediante dos conjuntos.
+- comprasPorCliente: construye un mapa de frecuencias.
+- clientesRecurrentesMap: obtiene los clientes recurrentes desde el mapa de frecuencias.
+
+La implementación conserva el criterio original de contabilizar registros por cliente.
+
+### 6. Probar
+
+Se diseñaron pruebas de equivalencia utilizando los datos originales, 5000 ventas generadas, arreglos vacíos, una sola venta y clientes repetidos.
+
+Los resultados se ordenan antes de compararlos, debido a que los algoritmos pueden devolver los clientes en diferente orden.
+
+Se utiliza assert.deepEqual para detectar resultados diferentes.
+
+### Predicción de rendimiento
+
+Al multiplicar por diez la cantidad de ventas:
+
+- El algoritmo original aumentará aproximadamente cien veces las comparaciones entre pares.
+- Los algoritmos optimizados aumentarán aproximadamente diez veces su trabajo.
+
+### Mediciones
+
+Ejecutar node src/optimizarRecurrentes.js y registrar la tabla Markdown generada por el programa.
+
+La versión original no se ejecutará con 100000 registros debido a su elevado costo computacional.
+
+### Complejidad algorítmica
+
+| Función | Tiempo | Espacio adicional |
+|---|---|---|
+| clientesRecurrentes | O(n³), peor caso | O(n) |
+| clientesRecurrentesSet | O(n) esperado | O(u) |
+| comprasPorCliente | O(n) esperado | O(u) |
+| clientesRecurrentesMap | O(n) esperado | O(u) |
+
+Donde u representa el número de clientes distintos. En el peor caso, u puede crecer proporcionalmente a n, por lo que el espacio adicional es O(n).
+
+### Intercambio entre tiempo y memoria
+
+Las nuevas implementaciones utilizan estructuras adicionales para almacenar información sobre los clientes.
+
+Aunque necesitan memoria para los conjuntos y mapas, reducen considerablemente las búsquedas repetidas.
+
+Se obtiene una solución con crecimiento temporal lineal esperado, adecuada para volúmenes superiores de información.
+
+### Decisión técnica
+
+Se selecciona clientesRecurrentesSet como implementación preferida cuando únicamente se necesitan los clientes recurrentes.
+
+La versión Map se conserva porque permite consultar también la frecuencia de compras de cada cliente y reutilizar esa información en otros análisis comerciales.
+
+El algoritmo original se conserva como referencia de rendimiento.
+
+### Conclusión
+
+Al almacenar los resultados de búsquedas anteriores, se elimina la necesidad de comparar repetidamente las ventas entre sí.
+
+La optimización reduce el costo computacional del reporte y mejora su escalabilidad.
 
 `node src/medirMemoria.js`
