@@ -166,3 +166,23 @@ Se incorporó un generador de ventas sintéticas y funciones instrumentadas para
 Se analizan conjuntos de 100, 1000, 10000 y 100000 registros.
 
 Estado: v0.2 en desarrollo.
+
+
+
+## MiniReto 6 — Diagnóstico de algoritmos cuadráticos
+
+Se incorporó un análisis de rendimiento de la función clientesRecurrentes, evaluando el costo de los ciclos anidados y las búsquedas mediante includes.
+
+### Ejecutar mediciones
+
+`node src/medirRecurrentes.js`
+
+Se analizan conjuntos de 1000, 2000, 4000, 8000 y 16000 ventas.
+
+### Prueba adicional
+
+`node src/medirRecurrentes.js --100k`
+
+La prueba adicional solamente se ejecuta cuando el tiempo estimado es inferior a dos minutos.
+
+El algoritmo original se conserva como referencia para futuras optimizaciones.

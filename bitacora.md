@@ -442,3 +442,101 @@ Ninguna de las cuatro funciones presenta complejidad cuadrática.
 ### Comando de ejecución
 
 `node src/medir.js`
+
+
+## MiniReto 6: Diagnóstico de complejidad cuadrática
+
+### Objetivo
+
+Analizar el rendimiento de la función clientesRecurrentes mediante ciclos anidados, mediciones de tiempo y estimaciones de escalabilidad.
+
+### Predicción
+
+Se espera que al duplicar el tamaño de la entrada, las comparaciones entre clientes y el tiempo de ejecución aumenten aproximadamente cuatro veces para los datos generados.
+
+### Verificación funcional
+
+Con los doce registros originales, la función debe retornar los clientes C01, C02 y C03.
+
+### Traza manual
+
+Arreglo de cinco ventas con los clientes C01, C02, C03, C01 y C04.
+
+| Índice i | Índices j comparados | Comparaciones | Coincidencias |
+|---:|---|---:|---|
+| 0 | 1, 2, 3, 4 | 4 | C01 |
+| 1 | 2, 3, 4 | 3 | Ninguna |
+| 2 | 3, 4 | 2 | Ninguna |
+| 3 | 4 | 1 | Ninguna |
+| 4 | Ninguno | 0 | Ninguna |
+| Total | | 10 | C01 |
+
+La cantidad de comparaciones entre clientes se obtiene mediante:
+
+C(n) = n(n - 1) / 2
+
+El término dominante es n², por lo que los ciclos anidados tienen complejidad cuadrática.
+
+### Mediciones de referencia
+
+Las siguientes mediciones corresponden a una ejecución de referencia en Node.js v22.16.0. Se realizaron tres pruebas por tamaño y se seleccionó la mediana.
+
+| Registros | Comparaciones | Tiempo (ms) | Factor |
+|---:|---:|---:|---:|
+| 1000 | 499500 | 3.565 | — |
+| 2000 | 1999000 | 14.430 | 4.05 |
+| 4000 | 7998000 | 58.779 | 4.07 |
+| 8000 | 31996000 | 223.751 | 3.81 |
+| 16000 | 127992000 | 1000.766 | 4.47 |
+
+Los resultados muestran que el tiempo aumenta aproximadamente cuatro veces cuando se duplica el tamaño de la entrada.
+
+### Estimaciones de rendimiento
+
+Se utiliza la fórmula:
+
+T(n) = T₀ × (n / n₀)²
+
+Tomando como referencia 16000 registros y 1000.766 milisegundos:
+
+| Registros | Comparaciones | Tiempo estimado |
+|---:|---:|---:|
+| 100000 | 4999950000 | 39.09 segundos |
+| 1000000 | 499999500000 | 65.15 minutos |
+
+Estas estimaciones suponen que se mantiene el comportamiento cuadrático observado. No constituyen mediciones reales de estos tamaños.
+
+### Costo oculto de includes()
+
+El método includes realiza una búsqueda secuencial dentro del arreglo de clientes recurrentes.
+
+Aunque los ciclos anidados realizan O(n²) comparaciones entre clientes, includes puede necesitar O(n) operaciones adicionales en cada llamada.
+
+En determinadas distribuciones de clientes, el peor caso del algoritmo completo puede alcanzar O(n³).
+
+La complejidad espacial auxiliar es O(n), porque el arreglo de clientes recurrentes puede crecer proporcionalmente al número de registros.
+
+### Conclusión para la gerente
+
+El reporte actual funciona correctamente con pocos registros, pero pierde eficiencia cuando aumenta el historial de ventas.
+
+Esto ocurre porque el sistema compara repetidamente las compras entre sí para identificar clientes recurrentes. Cuando se duplica la cantidad de información, el trabajo puede multiplicarse aproximadamente por cuatro o incluso más.
+
+Con el crecimiento comercial previsto, este procedimiento podría generar tiempos de espera inaceptables. Se recomienda optimizar el algoritmo antes de utilizarlo con grandes volúmenes de información.
+
+### Decisiones técnicas
+
+- Se conservó el algoritmo original para diagnosticar su comportamiento.
+- Se utilizó el generador del MiniReto 5.
+- Se excluyó la generación de datos del tiempo medido.
+- Se utilizaron console.time, console.timeEnd y performance.now.
+- Se seleccionó la mediana de tres mediciones.
+- La prueba de 100000 registros está condicionada a una estimación inferior a dos minutos.
+
+### Comando de ejecución
+
+`node src/medirRecurrentes.js`
+
+Prueba adicional:
+
+`node src/medirRecurrentes.js --100k`
