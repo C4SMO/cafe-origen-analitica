@@ -275,3 +275,98 @@ Reescribir los indicadores mediante métodos de arreglos, comprobar su equivalen
 Se creó el archivo verificar.js para comparar los resultados de ambos algoritmos, comprobar el comportamiento ante arreglos vacíos, validar la normalización de ciudades y verificar que los datos originales permanezcan intactos.
 
 Comando de ejecución: `node src/verificar.js`.
+
+
+
+## MiniReto 4: Integración, depuración y entrega v0.1
+
+### Objetivo
+
+Integrar las funciones de análisis en un reporte de negocio por consola y comprobar la corrección de los errores relacionados con la agrupación de ciudades y el cálculo del ticket promedio.
+
+### Pseudocódigo
+
+1. Importar los datos y las funciones de análisis.
+2. Crear una función para formatear valores monetarios.
+3. Calcular y mostrar los indicadores generales.
+4. Agrupar los ingresos por ciudad.
+5. Agrupar y ordenar las unidades por producto.
+6. Mostrar los tres productos con mayores ingresos.
+7. Filtrar las ventas de una fecha determinada.
+8. Comprobar el comportamiento de una fecha sin ventas.
+9. Verificar los errores reportados.
+
+### Depuración 1: Ciudades duplicadas
+
+**Síntoma:** Bogotá aparece en dos grupos diferentes.
+
+**Entrada que produce el error:** dos registros con las ciudades "Bogotá" y "Bogotá ", respectivamente.
+
+**Hipótesis:** JavaScript interpreta las cadenas con espacios adicionales como valores diferentes.
+
+**Prueba realizada:** se diseñó una agrupación sin normalización y se comparó con la función totalPorCiudad.
+
+**Causa:** ausencia de normalización antes de utilizar los nombres como claves de un objeto.
+
+**Corrección:** aplicar trim() y toLowerCase() antes de agrupar y generar un nombre uniforme para la presentación.
+
+**Resultado esperado:** un único grupo Bogotá con ingresos de 78000 COP en los datos de prueba.
+
+### Depuración 2: Ticket promedio igual a NaN
+
+**Síntoma:** el ticket promedio muestra NaN cuando no existen ventas.
+
+**Entrada que produce el error:** un arreglo vacío obtenido al consultar la fecha 2026-09-07.
+
+**Hipótesis:** la función realiza una división entre cero.
+
+**Prueba realizada:** se diseñó una comparación entre la operación directa 0/0 y la función ticketPromedio.
+
+**Causa:** ausencia de una validación del contador antes de efectuar la división.
+
+**Corrección:** comprobar si el número de ventas válidas es cero y retornar 0 antes de realizar la operación.
+
+**Resultado esperado:** ticket promedio igual a cero, sin errores en el reporte final.
+
+### Decisiones técnicas
+
+- Se mantienen separados los datos, la lógica de negocio, las pruebas y el reporte.
+- Se reutilizan las funciones desarrolladas en los MiniRetos anteriores.
+- La función ventasDelDia retorna un arreglo de registros correspondientes a la fecha solicitada.
+- Se utiliza toLocaleString("es-CO") para representar los valores monetarios.
+- No se modifica el arreglo original.
+- Cuando no existe una venta mayor, se muestra el mensaje "Sin ventas".
+- Los errores se reproducen de forma controlada en depurar.js, sin incorporarlos al reporte final.
+
+### Resultados esperados del reporte general
+
+| Indicador | Resultado |
+|---|---:|
+| Registros | 12 |
+| Ventas válidas | 11 |
+| Total vendido | 985000 COP |
+| Unidades vendidas | 21 |
+| Venta mayor | 168000 COP |
+| Ticket promedio | 89545.45 COP aprox. |
+| Ciudades | 4 |
+
+### Pruebas del reporte diario
+
+| Indicador | 2026-09-01 | 2026-09-07 |
+|---|---:|---:|
+| Registros | 2 | 0 |
+| Total vendido | 110000 | 0 |
+| Unidades | 3 | 0 |
+| Ticket promedio | 55000 | 0 |
+
+### Comandos de verificación
+
+- `node src/explorar.js`
+- `node src/pruebas.js`
+- `node src/verificar.js`
+- `node src/depurar.js`
+- `node src/reporte.js`
+
+### Entrega
+
+Versión v0.1 del motor de analítica de Café Origen, desarrollada mediante JavaScript, Node.js y CommonJS, con control de versiones mediante Git y GitHub.
