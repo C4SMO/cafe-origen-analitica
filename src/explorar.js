@@ -1,17 +1,16 @@
-// pedir al archivo datos/ que me traiga ventas
-const {ventas} = require("./datos");
+const ventas = require("./datos.js");
 
-// muéstrame el tamaño de ventas "recuerda que comienza el conteo desde cero"
-console.log(ventas.length)
+// Cantidad de registros
+console.log("Cantidad de registros:", ventas.length);
 
-// Muestra el primer registro de las ventas conteo de el primer termino al ultimo
-console.log(ventas[0])
+// Primer registro
+console.log("Primer registro:", ventas[0]);
 
-// Muestra el primer registro de las ventas conteo de el ultimo termino, cuenta desde la ultima posición hasta la primera
-console.log(ventas[ventas.length - 1])
+// Último registro
+console.log("Último registro:", ventas[ventas.length - 1]);
 
-// Traer la posición 4 de ventas 
-console.log(ventas[3].producto)
+// Producto en la posición 4
+console.log("Producto:", ventas[4].producto);
 
-// 
-console.table(ventas)
+// Tabla completa
+console.table(ventas);
