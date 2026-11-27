@@ -540,3 +540,115 @@ Con el crecimiento comercial previsto, este procedimiento podría generar tiempo
 Prueba adicional:
 
 `node src/medirRecurrentes.js --100k`
+
+
+
+
+## MiniReto 7: Complejidad espacial y recorrido único
+
+### Objetivo
+
+Comparar el consumo de memoria y el número de recorridos de una cadena de métodos frente a un algoritmo de una sola pasada.
+
+### Predicción
+
+Ambas funciones tendrán complejidad temporal O(n). Sin embargo, la versión encadenada necesitará memoria adicional proporcional a la entrada, mientras que la versión con un ciclo utilizará memoria constante.
+
+### Comparación de algoritmos
+
+| Característica | Cadena | Una pasada |
+|---|---|---|
+| Etapas de recorrido | 4 | 1 |
+| Arreglos nuevos | 3 | 0 |
+| Complejidad temporal | O(n) | O(n) |
+| Complejidad espacial | O(n) | O(1) |
+| Modifica los datos originales | No | No |
+
+### Análisis temporal
+
+La versión encadenada realiza cuatro etapas:
+
+1. map: normalización de las ciudades.
+2. filter: selección de las ventas válidas de la ciudad.
+3. map: transformación de las ventas en valores monetarios.
+4. reduce: acumulación de los ingresos.
+
+Los dos primeros métodos recorren n elementos. Los dos siguientes recorren m elementos, donde m representa las ventas que cumplen la condición.
+
+El número de visitas es:
+
+T(n, m) = 2n + 2m
+
+En el peor caso, cuando todas las ventas coinciden:
+
+T(n) = 4n
+
+Al eliminar las constantes, obtenemos O(n).
+
+La versión de una pasada realiza n visitas, por lo que también pertenece a O(n).
+
+### Análisis espacial
+
+La versión encadenada crea tres arreglos adicionales y nuevos objetos durante la normalización. Su consumo de memoria crece proporcionalmente al tamaño de los datos.
+
+La versión de una pasada utiliza un acumulador y variables temporales, sin crear colecciones intermedias. Su complejidad espacial es O(1), considerando nombres de ciudades de longitud acotada.
+
+### Clasificación espacial del motor
+
+| Función | Complejidad espacial |
+|---|---|
+| valorVenta | O(1) |
+| totalVendido | O(1) |
+| unidadesVendidas | O(1) |
+| ventaMayor | O(1) |
+| ticketPromedio | O(1) |
+| ventasPorCiudad | O(1) |
+| totalVendidoM | O(n) |
+| unidadesVendidasM | O(n) |
+| ventasPorCiudadM | O(n) |
+| totalPorCiudad | O(n) |
+| unidadesPorProducto | O(n) |
+| topProductosPorValor | O(n) |
+| ventasDelDia | O(n) |
+| totalVendidoI | O(1) |
+| ventaMayorI | O(1) |
+| totalPorCiudadI | O(c) |
+| primeraVenta | O(1) |
+| clientesRecurrentes | O(n) |
+| totalCiudadCadena | O(n) |
+| totalCiudadUnaPasada | O(1) |
+
+Los diccionarios de agrupación dependen de la cantidad de claves distintas. Para ciudades se utiliza O(c) y para productos O(p). No obstante, los arreglos intermedios creados por filter y otros métodos hacen que varias funciones tengan una complejidad espacial de O(n).
+
+### Resultados de referencia
+
+Se realizó una prueba independiente con 10000 registros generados.
+
+| Indicador | Cadena | Una pasada |
+|---|---:|---:|
+| Ingresos | 485997000 | 485997000 |
+| Visitas | 24990 | 10000 |
+| Arreglos nuevos | 3 | 0 |
+| Resultado con arreglo vacío | 0 | 0 |
+
+La versión de una pasada redujo aproximadamente un 59.98 % las visitas a elementos en esta prueba.
+
+Los resultados de la ejecución local deben registrarse después de ejecutar medirMemoria.js.
+
+### Decisión técnica
+
+Se selecciona totalCiudadUnaPasada como implementación preferida para el motor de producción.
+
+Aunque los métodos encadenados ofrecen una representación declarativa y legible, la versión de una pasada obtiene el mismo resultado utilizando menos memoria auxiliar y realizando menos recorridos.
+
+Esta decisión responde a las restricciones de memoria del servidor donde se ejecutará el motor.
+
+Se conservará totalCiudadCadena como referencia para futuras comparaciones de rendimiento.
+
+### Conclusión
+
+Dos algoritmos pueden pertenecer a la misma categoría de complejidad temporal y presentar diferencias importantes en su cantidad real de operaciones y consumo de memoria.
+
+### Comando de ejecución
+
+`node src/medirMemoria.js`

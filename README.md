@@ -186,3 +186,19 @@ Se analizan conjuntos de 1000, 2000, 4000, 8000 y 16000 ventas.
 La prueba adicional solamente se ejecuta cuando el tiempo estimado es inferior a dos minutos.
 
 El algoritmo original se conserva como referencia para futuras optimizaciones.
+
+
+## MiniReto 7 — Complejidad espacial
+
+Se compararon dos implementaciones para calcular los ingresos por ciudad:
+
+- `totalCiudadCadena`: tiempo O(n), espacio O(n).
+- `totalCiudadUnaPasada`: tiempo O(n), espacio O(1).
+
+Se seleccionó la implementación de recorrido único como alternativa preferida para entornos con memoria limitada.
+
+### Ejecutar la comparación
+
+`node src/medirMemoria.js`
+
+La prueba utiliza 10000 ventas generadas y verifica la equivalencia de los resultados, los recorridos, la creación de arreglos y la integridad de los datos originales.
