@@ -25,3 +25,21 @@ El proyecto busca responder preguntas de negocio mediante el procesamiento de ar
 Desde la raíz del proyecto:
 
 `node src/explorar.js`
+
+
+## MiniReto 2 — Indicadores de negocio
+
+Se implementaron seis funciones de análisis mediante ciclos manuales:
+
+- `valorVenta()`
+- `totalVendido()`
+- `unidadesVendidas()`
+- `ventaMayor()`
+- `ticketPromedio()`
+- `ventasPorCiudad()`
+
+Se aplicaron los patrones contador, acumulador y máximo, incluyendo el manejo de arreglos vacíos y la normalización de ciudades.
+
+### Ejecutar las pruebas
+
+`node src/pruebas.js`
