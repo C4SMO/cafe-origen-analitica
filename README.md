@@ -147,3 +147,22 @@ El motor normaliza los nombres de las ciudades, conserva los registros originale
 ## Estado del proyecto
 
 Versión v0.1 — Motor de analítica por consola.
+
+
+
+## MiniReto 5 — Análisis de algoritmos
+
+Se incorporó un generador de ventas sintéticas y funciones instrumentadas para analizar el crecimiento del número de operaciones mediante la notación Big O.
+
+### Nuevos módulos
+
+- `src/generador.js`: generación de historiales de ventas.
+- `src/medir.js`: medición y comparación de operaciones.
+
+### Ejecutar las mediciones
+
+`node src/medir.js`
+
+Se analizan conjuntos de 100, 1000, 10000 y 100000 registros.
+
+Estado: v0.2 en desarrollo.

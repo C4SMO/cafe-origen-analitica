@@ -172,6 +172,85 @@ function ventasDelDia(ventas, fecha) {
     return ventas.filter(venta => venta.fecha === fecha);
 }
 
+// Total vendido instrumentado
+function totalVendidoI(ventas, contador) {
+    let total = 0;
+
+    for (const venta of ventas) {
+        contador.operaciones++; // Visita
+        contador.operaciones++; // Comparación
+
+        if (venta.cantidad > 0) {
+            total += valorVenta(venta);
+        }
+    }
+
+    return total;
+}
+
+
+// Venta mayor instrumentada
+function ventaMayorI(ventas, contador) {
+    let mayor = null;
+
+    for (const venta of ventas) {
+        contador.operaciones++; // Visita
+        contador.operaciones++; // Comparación
+
+        if (venta.cantidad > 0) {
+
+            contador.operaciones++; // Comparación
+
+            if (mayor === null) {
+                mayor = venta;
+            } else {
+
+                contador.operaciones++; // Comparación
+
+                if (valorVenta(venta) > valorVenta(mayor)) {
+                    mayor = venta;
+                }
+            }
+        }
+    }
+
+    return mayor;
+}
+
+
+// Total por ciudad instrumentado
+function totalPorCiudadI(ventas, contador) {
+    const grupos = {};
+
+    for (const venta of ventas) {
+        contador.operaciones++; // Visita
+        contador.operaciones++; // Comparación
+
+        if (venta.cantidad > 0) {
+
+            const nombre = venta.ciudad
+                .trim()
+                .toLowerCase();
+
+            const ciudad = nombre.charAt(0).toUpperCase()
+                + nombre.slice(1);
+
+            grupos[ciudad] =
+                (grupos[ciudad] ?? 0) + valorVenta(venta);
+        }
+    }
+
+    return grupos;
+}
+
+
+// Acceso directo de complejidad constante
+function primeraVenta(ventas, contador) {
+    contador.operaciones++; // Acceso directo
+
+    return ventas[0] ?? null;
+}
+
 module.exports = {
     valorVenta,
     totalVendido,
@@ -185,5 +264,9 @@ module.exports = {
     totalPorCiudad,
     unidadesPorProducto,
     topProductosPorValor,
-    ventasDelDia
+    ventasDelDia,
+    totalVendidoI,
+    ventaMayorI,
+    totalPorCiudadI,
+    primeraVenta
 };

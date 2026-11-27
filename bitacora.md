@@ -370,3 +370,75 @@ Integrar las funciones de análisis en un reporte de negocio por consola y compr
 ### Entrega
 
 Versión v0.1 del motor de analítica de Café Origen, desarrollada mediante JavaScript, Node.js y CommonJS, con control de versiones mediante Git y GitHub.
+
+
+## MiniReto 5: Generación de datos y conteo de operaciones
+
+### Predicciones antes de medir
+
+Se espera que, al multiplicar por diez el número de registros, las funciones que recorren completamente el arreglo aumenten aproximadamente diez veces su número de operaciones.
+
+| Función | Complejidad estimada | Crecimiento esperado |
+|---|---|---|
+| totalVendido | O(n) | 10 veces |
+| ventaMayor | O(n) | Aproximadamente 10 veces |
+| totalPorCiudad | O(n) | 10 veces |
+| primeraVenta | O(1) | Permanece constante |
+
+### Criterio de medición
+
+Se utilizará un objeto contador para registrar las visitas a elementos y las comparaciones explícitas realizadas por cada algoritmo instrumentado.
+
+Para primeraVenta se contabilizará un acceso directo al arreglo.
+
+No se pretende contabilizar todas las instrucciones internas del motor de JavaScript, sino operaciones representativas del crecimiento de cada algoritmo.
+
+
+
+### Resultados de la medición
+
+| Tamaño | totalVendido | ventaMayor | totalPorCiudad | primeraVenta |
+|---:|---:|---:|---:|---:|
+| 100 | 200 | 399 | 200 | 1 |
+| 1000 | 2000 | 3999 | 2000 | 1 |
+| 10000 | 20000 | 39999 | 20000 | 1 |
+| 100000 | 200000 | 399999 | 200000 | 1 |
+
+### Clasificación de los algoritmos
+
+**totalVendido — O(n)**
+
+Recorre todos los registros una sola vez. Por cada elemento contabiliza una visita y una comparación. El número de operaciones crece proporcionalmente al tamaño del arreglo.
+
+**ventaMayor — O(n)**
+
+Recorre todos los registros para identificar la venta de mayor valor. Aunque realiza más comparaciones, no contiene ciclos anidados. Su crecimiento continúa siendo lineal.
+
+**totalPorCiudad — O(n)**
+
+Recorre las ventas una sola vez y acumula los ingresos utilizando un objeto como diccionario. Las operaciones de acceso al diccionario se consideran de costo constante esperado y los nombres de las ciudades tienen longitud acotada.
+
+**primeraVenta — O(1)**
+
+Accede directamente al índice cero del arreglo sin realizar recorridos. Su número de operaciones no depende del tamaño de la entrada.
+
+### Comparación entre predicciones y resultados
+
+Los resultados esperados respaldan las predicciones iniciales. Las funciones lineales aumentan aproximadamente diez veces su número de operaciones cuando el tamaño del arreglo se multiplica por diez. La función constante conserva una operación independientemente del volumen de datos.
+
+Ninguna de las cuatro funciones presenta complejidad cuadrática.
+
+### Decisiones técnicas
+
+- Se conservaron las funciones originales del motor v0.1.
+- Se crearon versiones instrumentadas independientes.
+- Se utilizaron objetos para almacenar los contadores.
+- Cada medición comienza con un contador inicializado en cero.
+- Se mantuvo la estructura original de los registros.
+- Se conservaron los precios asociados a cada producto.
+- Los datos generados tienen cantidades entre 1 y 5.
+- El conteo de operaciones es independiente del tiempo de ejecución.
+
+### Comando de ejecución
+
+`node src/medir.js`
